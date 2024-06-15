@@ -27,7 +27,13 @@ export default {
             redirect: 'follow',
         }).then(response => {
             let body = response.body
-            console.log(pathname)
+            if (pathname.startsWith('/RSS/MyBangumi')) {
+                return new Response('test', {
+                    headers: response.headers,
+                    status: response.status,
+                    statusText: response.statusText,
+                })
+            }
             return new Response(body, {
                 headers: response.headers,
                 status: response.status,
