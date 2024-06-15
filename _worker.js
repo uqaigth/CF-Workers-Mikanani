@@ -20,18 +20,19 @@ export default {
             headers.set(key, origin.replaceAll(worker_domain, mikan_domain))
         }
 
-        const response = await fetch(newUrl, {
+        return fetch(newUrl, {
             method: request.method,
             headers: headers,
             body: request.method !== 'GET' && request.method !== 'HEAD' ? await request.blob() : null,
             redirect: 'follow',
-        })
-
-        if (response.headers.get("Set-Cookie")) {
-            console.log(response.headers.get("Set-Cookie"))
-        }
-        return new Response(response.body, {
-            headers: response.headers, status: response.status, statusText: response.statusText,
+        }).then(response => {
+            let body = response.body
+            console.log(pathname)
+            return new Response(body, {
+                headers: response.headers,
+                status: response.status,
+                statusText: response.statusText,
+            })
         })
     },
 }
