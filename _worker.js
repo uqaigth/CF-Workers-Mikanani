@@ -25,20 +25,14 @@ export default {
             headers: headers,
             body: request.method !== 'GET' && request.method !== 'HEAD' ? await request.blob() : null,
             redirect: 'follow',
-        }).then(response => {
-            let body = response.body
+        }).then(async response => {
             if (pathname.startsWith('/RSS/MyBangumi')) {
-                return new Response('test', {
-                    headers: response.headers,
-                    status: response.status,
-                    statusText: response.statusText,
+                const text = await response.text()
+                return new Response(text.replaceAll(mikan_domain, worker_domain), {
+                    headers: response.headers, status: response.status, statusText: response.statusText,
                 })
             }
-            return new Response(body, {
-                headers: response.headers,
-                status: response.status,
-                statusText: response.statusText,
-            })
+            return response
         })
     },
 }
