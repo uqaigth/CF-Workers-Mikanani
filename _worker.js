@@ -26,7 +26,7 @@ export default {
             body: request.method !== 'GET' && request.method !== 'HEAD' ? await request.blob() : null,
             redirect: 'follow',
         }).then(async response => {
-            if (pathname.startsWith('/RSS/MyBangumi')) {
+            if (pathname.startsWith('/RSS')) {
                 const text = await response.text()
                 return new Response(text.replaceAll(mikan_domain, worker_domain), {
                     headers: response.headers, status: response.status, statusText: response.statusText,
